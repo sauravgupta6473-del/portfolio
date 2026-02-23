@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
+:root {
+    --primary: #4A00E0;
+    --secondary: #8E2DE2;
+    --text-dark: #1a1a2e;
+    --text-light: #4b4b6a;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    /* Beautiful Light Magenta to Soft Blue Gradient */
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Background Animated Blobs */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -1;
+    animation: float 10s infinite ease-in-out;
+}
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(238, 130, 238, 0.4); /* Soft Magenta */
+    top: -10%;
+    left: -10%;
+}
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(135, 206, 250, 0.5); /* Soft Blue */
+    bottom: -10%;
+    right: -5%;
+    animation-delay: -5s;
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after, .nav-links a.active::after {
+    width: 100%;
+}
+
+/* Page Sections (SPA Setup) */
+.page-section {
+    min-height: 100vh;
+    padding: 120px 10% 50px;
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.page-section.active-page {
+    display: block; /* Show active page */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Typography */
+h1 { font-size: 4rem; margin-bottom: 1rem; }
+.highlight { 
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+h2.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--primary);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2.5rem;
+}
+
+/* Hero Section */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 70vh;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.8;
+}
+
+.btn {
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(74, 0, 224, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(74, 0, 224, 0.4);
+}
+
+/* Skills Grid & Hover Effects */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2.5rem;
+}
+
+.skill-box {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: crosshair;
+}
+
+.skill-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    transition: transform 0.5s ease;
+}
+
+.skill-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.skill-content p {
+    color: var(--text-light);
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Pro-Level Hover Animation */
+.skill-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.7s ease;
+}
+
+.skill-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(74, 0, 224, 0.15);
+    border-color: rgba(74, 0, 224, 0.3);
+}
+
+.skill-box:hover::before {
+    left: 100%;
+}
+
+.skill-box:hover .skill-icon {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* Tags */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.tags span {
+    background: rgba(74, 0, 224, 0.1);
+    color: var(--primary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.1); }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saurav Kumar Gupta | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SKG.</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active" onclick="switchPage('home')">Home</a></li>
+            <li><a href="#about" onclick="switchPage('about')">About</a></li>
+            <li><a href="#skills" onclick="switchPage('skills')">Skills & Specialties</a></li>
+            <li><a href="#projects" onclick="switchPage('projects')">Projects</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="page-section active-page">
+        <div class="hero-content fade-in">
+            <h1>Hi, I'm <span class="highlight">Saurav Kumar Gupta</span></h1>
+            <h2>Tech Mastermind | Developer | Designer</h2>
+            <p>At 22, my vision is simple: to engineer a world driven by cutting-edge technology and cinematic visual experiences. I bridge the gap between heavy backend logic and stunning frontend aesthetics.</p>
+            <button class="btn" onclick="switchPage('skills')">Explore My Expertise</button>
+        </div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </section>
+
+    <section id="about" class="page-section">
+        <div class="container fade-in">
+            <h2 class="section-title">The Architect Behind the Code</h2>
+            <div class="glass-card about-card">
+                <p>I am a polymath in the digital realm. My journey isn't just about learning syntax; it's about understanding the deep architecture of computer applications. From architecting scalable web platforms to editing cinematic visual narratives, I bring a multidisciplinary approach to every project.</p>
+                <p>I thrive on continuous learning and academic rigor, constantly pushing my boundaries in core computer science subjects. Whether it's optimizing a React component, training a machine learning model, or designing a compelling user interface, my goal is always absolute perfection and high performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="page-section">
+        <div class="container">
+            <h2 class="section-title fade-in">My Technical Arsenal & Specialties</h2>
+            <div class="skills-grid">
+                
+                <div class="glass-card skill-box fade-in">
+                    <div class="skill-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>AI, Machine Learning & Data Analytics</h3>
+                    <div class="skill-content">
+                        <p><strong>The Edge:</strong> My proficiency in Artificial Intelligence and Machine Learning goes far beyond deploying standard libraries. I possess a deep, analytical understanding of data structures, honed through advanced professional-level data analytics training. I specialize in transforming raw, unstructured datasets into highly accurate, predictive models using Python. My vision is to integrate ML into educational tech and enterprise solutions (like advanced platforms similar to 'edufusion'), creating systems that learn, adapt, and scale. Whether it's natural language processing, complex regression models, or deep learning neural networks, I architect algorithms that drive actual business logic and innovation, ensuring that the AI solutions I build are not just functional, but revolutionary and deeply optimized.</p>
+                        <div class="tags">
+                            <span>Python</span><span>Machine Learning</span><span>AI</span><span>Data Analytics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card skill-box fade-in">
+                    <div class="skill-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>Full-Stack Web Development & SEO</h3>
+                    <div class="skill-content">
+                        <p><strong>The Edge:</strong> I don't just build websites; I engineer high-performance digital ecosystems. Leveraging the power of React for dynamic, lightning-fast user interfaces and Node.js for robust backend architectures, I create seamless full-stack applications. My code is exceptionally clean, utilizing modern HTML, CSS, and JS practices with an emphasis on flawless transitions and animations. Beyond the code, I am an SEO strategist. I understand that a beautiful website is useless if it cannot be found. I implement deep, technical SEO from the ground up—optimizing server response times, semantic structures, and meta-data, ensuring that every web platform I develop ranks at the top of search engines and provides a world-class user experience, ready for top-tier freelance or enterprise deployment.</p>
+                        <div class="tags">
+                            <span>React</span><span>Node.js</span><span>HTML/CSS/JS</span><span>SEO</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card skill-box fade-in">
+                    <div class="skill-icon"><i class="fa-solid fa-palette"></i></div>
+                    <h3>Cinematic Design & Video Editing</h3>
+                    <div class="skill-content">
+                        <p><strong>The Edge:</strong> In the realm of visual media, I am a storyteller. My graphic design and photo editing skills are focused on creating ultra-realistic, highly detailed, and cinematic digital art. I have a profound interest in hero-centric, action-oriented, and fantasy themes, knowing exactly how to manipulate light, shadow, and composition to evoke deep emotion. As a video editor, I understand pacing, color grading, and audio syncing, making my skills perfect for high-retention content like YouTube movie reviews or analytical breakdowns. I use design not just to make things look 'pretty', but to communicate complex ideas powerfully, ensuring that every pixel and every frame serves a distinct narrative purpose.</p>
+                        <div class="tags">
+                            <span>Graphic Design</span><span>Video Editing</span><span>Photo Editing</span><span>Cinematic Art</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card skill-box fade-in">
+                    <div class="skill-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>Core Engineering & Architecture</h3>
+                    <div class="skill-content">
+                        <p><strong>The Edge:</strong> True technological power lies in understanding the core. I am fluent in the foundational languages of computer science: C, C++, Java, Rust, and Kotlin. This isn't just syntax-level knowledge; it's a deep academic and practical comprehension of memory management, object-oriented principles, and systems programming—a mindset cultivated for higher-level computer applications mastery. While others rely solely on high-level frameworks, I have the capability to write the underlying logic that makes those frameworks run. From building secure, memory-safe backend services in Rust to developing scalable enterprise applications in Java and Kotlin, my foundation is virtually unbreakable. I also leverage advanced Excel and PowerPoint to translate these complex engineering feats into clear, strategic business presentations.</p>
+                        <div class="tags">
+                            <span>Java</span><span>C++</span><span>Rust</span><span>Kotlin</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            // 1. Page Navigation Logic (SPA Setup)
+function switchPage(pageId) {
+    // Prevent default anchor jump behavior
+    window.scrollTo(0, 0);
+
+    // Remove active class from all pages
+    const pages = document.querySelectorAll('.page-section');
+    pages.forEach(page => {
+        page.classList.remove('active-page');
+    });
+
+    // Remove active class from all nav links
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Add active class to clicked page and corresponding link
+    document.getElementById(pageId).classList.add('active-page');
+    document.querySelector(`.nav-links a[onclick="switchPage('${pageId}')"]`).classList.add('active');
+
+    // Retrigger animations for the new page
+    triggerAnimations();
+}
+
+// 2. Scroll and Reveal Animations (Intersection Observer)
+function triggerAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // Triggers when 10% of the element is visible
+    });
+
+    const hiddenElements = document.querySelectorAll('.fade-in');
+    hiddenElements.forEach((el) => {
+        // Reset visibility to allow re-triggering when switching pages
+        el.classList.remove('visible'); 
+        
+        // Slight delay to make the transition smooth
+        setTimeout(() => {
+            observer.observe(el);
+        }, 100);
+    });
+}
+
+// Initialize animations on first load
+document.addEventListener("DOMContentLoaded", () => {
+    triggerAnimations();
+});
+        </script>
+    </section>
+
+    <section id="projects" class="page-section">
+        <div class="container fade-in">
+            <h2 class="section-title">Featured Innovations</h2>
+            <div class="glass-card text-center">
+                <h3>Portfolio Expansion in Progress</h3>
+                <p>This space is reserved for my top-tier projects, from AI models to full-stack platforms.</p>
+                <button class="btn" style="margin-top: 20px;"><a href="https://github.com/sauravgupta6473-del/portfolio">View GitHub</a></button>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
